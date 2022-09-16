@@ -14,7 +14,7 @@ typedef struct student {
 } typeStudent;
 
 typeStudent* createStudent(char* first, char* last, long id, char* year, int grad);
-void addStudent(typeStudent* newStudent);
+void addStudent(typeStudent* root, typeStudent* newStudent);
 void cut(typeStudent* tobedeleted);
 void deleteStudent(char* last);
 void printForwards();
