@@ -242,7 +242,7 @@ int main(){
 
     	}
 	}
-    exit(0);
+    quit(root, tail);
     deallocateStudent(root);
     deallocateStudent(tail);
     free(root);
