@@ -2,8 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-typeStudent *root;
+#define BUFFER 128
+typeStudent **root;
+typeStudent **tail;
 
 typeStudent* createStudent(char* first, char*last, long id, char* year, int grad){
     typeStudent* student = malloc(sizeof(typeStudent));
@@ -15,19 +16,24 @@ typeStudent* createStudent(char* first, char*last, long id, char* year, int grad
     return student;
 }
 
-void addStudent(typeStudent* root, typeStudent* newStudent){
-        typeStudent* current = root;
-        while(current->next != NULL){
-            current = current->next;
-        }
-	if(current != root){
-        	current->next = (typeStudent*)malloc(sizeof(typeStudent));
-        	current->next = newStudent;
-        	current->next->next = NULL;
-        	current->next->prev = current;
+void addStudent(typeStudent **root, typeStudent **tail, typeStudent* newStudent){
+        if(*root == NULL){
+		*root = newStudent;
+		*tail = newStudent;
+	}else{
+		typeStudent* current = *root;
+        	while(current->next != NULL){
+            		current = current->next;
+       		}
+       		newStudent->next = NULL;
+		newStudent->prev = current;
+		current->next = (typeStudent*)malloc(sizeof(typeStudent));
+		current->next = newStudent;
+		*tail = newStudent;
+		//current->next->next = NULL;
 	}
 }
-
+/*
 void cut(typeStudent* tobedeleted){
     if(tobedeleted->next == NULL){
         typeStudent *behind = tobedeleted->prev;
@@ -41,9 +47,17 @@ void cut(typeStudent* tobedeleted){
         free(tobedeleted);
     }
 }
+*/
 
-void deleteStudent(char* last){
-    typeStudent* current = root;
+void deleteStudent(typeStudent** root, typeStudent** tail, char* last){
+    typeStudent* current = *root;
+    if(current->last == last){
+	while(current->next->last == last && current->next != NULL){
+		current = current->next;
+		free(current->prev);
+	}
+	*root = current;
+    }
     while(current->next != NULL){
         if(current->last == last){
             typeStudent *old = current;
@@ -63,29 +77,33 @@ void deleteStudent(char* last){
     }
 }
 
-void printForwards(){
-	printf("Gets here");
-    typeStudent* current = root;
+void printForwards(typeStudent** root){
+	//printf("Gets here");
+    typeStudent* current = *root;
+   // printf(root->first); core dumps
     while(current != NULL){
         printf("%s %s\n", current->first, current->last);
         current = current->next;
+	//printf(current->first);
     }
-   printf("gets here");
+   //printf("gets here");
 }
 
-void printBackwards(){
-    typeStudent* current = root;
+void printBackwards(typeStudent** tail){
+    typeStudent* current = *tail;
+    /*
     while(current->next != NULL){
         current = current->next;
     }
+    */
     while(current != NULL){
         printf("%s %s\n", current->first, current->last);
         current = current->prev;
     }
 }
 
-void quit(){
-    typeStudent *current = root;
+void quit(typeStudent** root){
+    typeStudent *current = *root;
     while(current != NULL){
         typeStudent *old = current;
         current = current->next;
@@ -98,28 +116,39 @@ void quit(){
 int main(){
     printf("Welcome to the Student List. To begin, we will create our first student\n");
     printf("First name:\n");
-    char *first = malloc(sizeof(char*));
-    fgets(first, 20, stdin);
+    char first[BUFFER];
+    fgets(first, 128, stdin);
     printf("Last name:\n");
-    char *last = malloc(sizeof(char*));
-    fgets(last, 20, stdin);
+    char last[BUFFER];
+    fgets(last, 128, stdin);
     printf("Student ID:\n");
-    long *id = malloc(sizeof(long));
-    scanf("%ld",id);
+    char id[BUFFER];
+    fgets(id, 128, stdin);
     printf("Freshmen, Sophomore, Junior, or Senior?\n");
-    char *year = malloc(sizeof(char*));
-    scanf("%s", year);
+    char year[BUFFER];
+    fgets(year, 128, stdin);
     printf("Graduation Year:\n");
-    int *grad = malloc(sizeof(int));
-    scanf("%d",grad);
-
+    //printf("-1");
+    char grad[BUFFER];
+    //printf("0");
+    //ends here for some reason
+    fgets(grad, 128, stdin);
+    //printf("1");
+    //printf("2");
     typeStudent* root;
+    typeStudent* tail;
     root = malloc(sizeof(typeStudent));
+    tail = malloc(sizeof(typeStudent));
+    //printf("3");
     int choice = 0;
-    root = createStudent(first, last, *id, year, grad);
-	
-    addStudent(root, createStudent(first, last, *id, year, *grad));
-
+    //printf("4");
+    int realId = atoi(id);
+    long int realRealId = (long int)realId;
+    int realGrad = atoi(grad);
+    root = createStudent(first, last, realRealId, year, realGrad);
+    //printf("5");
+    *tail = *root;
+    //printf("6");
     while(choice != 5){
         printf("Now, how would you like to proceed?\n");
         printf("Enter the number that corresponds to your choice.\n");
@@ -133,33 +162,37 @@ int main(){
         if(choice == 1){
             printf("Let's Begin.\n");
             printf("First name:\n");	    
-            fgets(first, 20, stdin);
+            fgets(first, 64, stdin);
             printf("Last name:\n");
-            fgets(last, 20, stdin);
+            fgets(last, 64, stdin);
             printf("Student ID:\n");
-            scanf("%ld",id);
+            fgets(id, 64, stdin);
             printf("Freshmen, Sophomore, Junior, or Senior?\n");
-            scanf("%s", year);
+            fgets(year, 64, stdin);
             printf("Graduation Year:\n");
-            scanf("%d",grad);
+            fgets(grad, 64, stdin);
+	    realId = atoi(id);
+	    realRealId = (long int)realId;
+	    realGrad = atoi(grad);
 
-            addStudent(root, createStudent(first, last, *id, year, *grad));
+            addStudent(&root, &tail, createStudent(first, last, realRealId, year, realGrad));
 
         }else if(choice == 2){
             printf("What is the last name of this unfortunate Student?\n");
             fgets(last, 15, stdin);
-            deleteStudent(last);
+            deleteStudent(&root, &tail, last);
 
         }else if(choice == 3){
-            printForwards();
+            printForwards(&root);
 
         }else if(choice == 4){
-            printBackwards();
+            printBackwards(&root);
 
         }else if(choice == 5){
             choice = 5;
-        }
-    }
+
+    	}
+	}
     exit(0);
     free(root);
 		

@@ -14,11 +14,11 @@ typedef struct student {
 } typeStudent;
 
 typeStudent* createStudent(char* first, char* last, long id, char* year, int grad);
-void addStudent(typeStudent* root, typeStudent* newStudent);
-void cut(typeStudent* tobedeleted);
-void deleteStudent(char* last);
-void printForwards();
-void printBackwards();
-void quit();
+void addStudent(typeStudent** root, typeStudent** tail, typeStudent* newStudent);
+//void cut(typeStudent* tobedeleted);
+void deleteStudent(typeStudent** root, typeStudent** tail, char* last);
+void printForwards(typeStudent** root);
+void printBackwards(typeStudent** tail);
+void quit(typeStudent** root);
 
-#endif //what does this do
+#endif
