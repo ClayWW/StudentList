@@ -80,8 +80,6 @@ void addStudent(typeStudent **root, typeStudent **tail, typeStudent* newStudent)
         end->next = newStudent;
         newStudent->prev = *tail;
         *tail = newStudent;
-        deallocateStudent(end);
-        free(end);
 	}
 }
 
@@ -129,7 +127,7 @@ void deleteStudent(typeStudent** root, typeStudent** tail, char* delete){
     free(current);
 }
 
-void printForwards(typeStudent** root){ //works
+void printForwards(typeStudent** root){ //worksd
     /*
         PARAMETERS: typeStudent** root: a double pointer that points to the pointer of the root
         RETURNS: None
@@ -143,8 +141,6 @@ void printForwards(typeStudent** root){ //works
         printf("%s %s\n", current->first, current->last);
         current = current->next;
     }
-    deallocateStudent(current);
-    free(current);
 }
 
 void printBackwards(typeStudent** tail){ //works
