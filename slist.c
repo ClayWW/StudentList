@@ -2,9 +2,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+<<<<<<< HEAD
 #define BUFFER 128
 typeStudent **root;
 typeStudent **tail;
+=======
+
+typeStudent *root;
+>>>>>>> 6d92f88f689864188073186b3d03f7137c070f7c
 
 typeStudent* createStudent(char* first, char*last, long id, char* year, int grad){
     typeStudent* student = malloc(sizeof(typeStudent));
@@ -16,6 +21,7 @@ typeStudent* createStudent(char* first, char*last, long id, char* year, int grad
     return student;
 }
 
+<<<<<<< HEAD
 void addStudent(typeStudent **root, typeStudent **tail, typeStudent* newStudent){
         if(*root == NULL){
 		*root = newStudent;
@@ -34,6 +40,30 @@ void addStudent(typeStudent **root, typeStudent **tail, typeStudent* newStudent)
 	}
 }
 /*
+=======
+void addStudent(typeStudent* root, typeStudent* newStudent){
+    typeStudent* current = root; //begin at the root
+    printf(root->first);
+    printf(current->first);
+    while(current->next != NULL){
+        current = current->next;    //keep going right so long as the next node doesn't return NULL
+        printf(current->first);
+    }
+    if(current != root){ //if the created student is not the root value, add to the right
+        printf("1");
+        current->next = (typeStudent*)malloc(sizeof(typeStudent));
+        current->next = newStudent;
+        current->next->next = NULL;
+        current->next->prev = current;
+    }else{ //if the created student is the root, establish them as such
+        printf("2");
+        current->next = NULL;
+        current->prev = NULL;
+    }
+}
+
+
+>>>>>>> 6d92f88f689864188073186b3d03f7137c070f7c
 void cut(typeStudent* tobedeleted){
     if(tobedeleted->next == NULL){
         typeStudent *behind = tobedeleted->prev;
@@ -141,6 +171,7 @@ int main(){
     tail = malloc(sizeof(typeStudent));
     //printf("3");
     int choice = 0;
+<<<<<<< HEAD
     //printf("4");
     int realId = atoi(id);
     long int realRealId = (long int)realId;
@@ -149,6 +180,12 @@ int main(){
     //printf("5");
     *tail = *root;
     //printf("6");
+=======
+    root = createStudent(first, last, *id, year, *grad);
+
+    addStudent(root, createStudent(first, last, *id, year, *grad));
+
+>>>>>>> 6d92f88f689864188073186b3d03f7137c070f7c
     while(choice != 5){
         printf("Now, how would you like to proceed?\n");
         printf("Enter the number that corresponds to your choice.\n");
@@ -175,7 +212,11 @@ int main(){
 	    realRealId = (long int)realId;
 	    realGrad = atoi(grad);
 
+<<<<<<< HEAD
             addStudent(&root, &tail, createStudent(first, last, realRealId, year, realGrad));
+=======
+            addStudent(root, createStudent(first, last, *id, year, *grad));
+>>>>>>> 6d92f88f689864188073186b3d03f7137c070f7c
 
         }else if(choice == 2){
             printf("What is the last name of this unfortunate Student?\n");
@@ -183,7 +224,13 @@ int main(){
             deleteStudent(&root, &tail, last);
 
         }else if(choice == 3){
+<<<<<<< HEAD
             printForwards(&root);
+=======
+            printf(root->first);
+            printForwards();
+            printf(root->first);
+>>>>>>> 6d92f88f689864188073186b3d03f7137c070f7c
 
         }else if(choice == 4){
             printBackwards(&root);
