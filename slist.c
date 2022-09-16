@@ -1,6 +1,7 @@
 #include "slist.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 typeStudent *root;
 
@@ -51,7 +52,19 @@ void deleteStudent(char* last){
         if(current->last == last){
             typeStudent *old = current;
             current = current->next;
-            cut(old);
+            if(old->next == NULL){
+        	typeStudent *behind = old->prev;
+       		behind->next = NULL;
+        	free(old);
+        	ticker--;
+	    }else{
+        	typeStudent *behind = old->prev;
+        	typeStudent *front = old->next;
+        	front->prev = behind;
+        	behind->next = front;
+        	free(old);
+        	ticker--;
+	    }
         }
     }
 }
@@ -75,7 +88,7 @@ void printBackwards(){
     }
 }
 
-void exit(){
+void quit(){
     typeStudent *current = root;
     while(current != NULL){
         typeStudent *old = current;
@@ -108,9 +121,14 @@ int main(){
     root = malloc(sizeof(typeStudent));
     int ticker = 0;
     int choice = 0;
+<<<<<<< HEAD
     root = createStudent(first, last, *id, year, *grad);
 
     addStudent(root, createStudent(first, last, *id, year, *grad));
+=======
+	
+    addStudent(createStudent(first, last, *id, year, *grad));
+>>>>>>> fa064795eb35425694d0f79fab91d348ca274a52
 
     while(choice != 5){
         printf("Now, how would you like to proceed?\n");
@@ -121,10 +139,13 @@ int main(){
         printf("4: Print the List from End to Beginning\n");
         printf("5: Exit the Program\n");
         scanf("%d", &choice);
+	getchar();
         if(choice == 1){
             printf("Let's Begin.\n");
             printf("First name:\n");
+	    printf("Gets to fget");	    
             fgets(first, 20, stdin);
+	    printf("Gets through fget");
             printf("Last name:\n");
             fgets(last, 20, stdin);
             printf("Student ID:\n");
