@@ -17,7 +17,7 @@ typeStudent* createStudent(){
     Id is a long int and grad year is an int so for those two specific cases we go through the steps of converting them from a char to their respective 
     data types. Our final result is a completed student (aside from their next and prev fields which remain NULL for the time being).
     */
-    typeStudent* student;
+    typeStudent* student = malloc(sizeof(typeStudent));
     int control;
 
     char first[BUFFER];
@@ -165,7 +165,7 @@ void printBackwards(typeStudent** tail){ //works
     free(current);
 }
 
-void quit(typeStudent** root, typeStudent** tail){ //quits but may need to check if it properly deconstructs everything
+void quit(typeStudent** root){ //quits but may need to check if it properly deconstructs everything
     /*
         PARAMETERS: typeStudent** root: a double pointer that points to the pointer of the root
         RETURNS: None
@@ -174,22 +174,20 @@ void quit(typeStudent** root, typeStudent** tail){ //quits but may need to check
         student's memory until we are left with nothing but our current value left. We then free the final student and exit from the program.
     */
     typeStudent *current = *root;
+    printf("a");
     while(current != NULL){
+        printf("b");
         typeStudent *old = current;
+        printf("c");
         current = current->next;
-        deallocateStudent(old);
-        //free(old->next);
-        //free(old->prev);
+        printf("d");
+        printf("e");
         free(old);
+        printf("f");
     }
-    deallocateStudent(root);
-    free(root);
-    deallocateStudent(tail);
-    free(tail);
-    deallocateStudent(current);
-    free(current->next);
-    free(current->prev);
     free(current);
+    printf("k");
+    
     exit(0);
 }
 
@@ -204,8 +202,8 @@ int main(){
     
     typeStudent* root;
     typeStudent* tail;
-    //root = malloc(sizeof(typeStudent));
-    //tail = malloc(sizeof(typeStudent));
+    root = malloc(sizeof(typeStudent));
+    tail = malloc(sizeof(typeStudent));
     int choice = 0;
     root = createStudent();
     tail = root;
@@ -238,16 +236,16 @@ int main(){
             printBackwards(&tail);
 
         }else if(choice == 5){
+            printf("here1");
             choice = 5;
+            printf("here2");
 
     	}
+        printf("here3");
 	}
-    quit(root, tail);
-    deallocateStudent(root);
-    deallocateStudent(tail);
-    free(root);
-    free(tail);
-		
+    printf("here4");
+    quit(&root);
+    exit(0);
     return 0;
 }
 

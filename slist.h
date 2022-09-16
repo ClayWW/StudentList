@@ -18,7 +18,7 @@ void addStudent(typeStudent** root, typeStudent** tail, typeStudent* newStudent)
 void deleteStudent(typeStudent** root, typeStudent** tail, char* delete);
 void printForwards(typeStudent** root);
 void printBackwards(typeStudent** tail);
-void quit(typeStudent** root, typeStudent** tail);
+void quit(typeStudent** root);
 void deallocateStudent(typeStudent* student);
 
 #endif
