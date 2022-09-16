@@ -198,8 +198,8 @@ int main(){
     
     typeStudent* root;
     typeStudent* tail;
-    root = malloc(sizeof(typeStudent));
-    tail = malloc(sizeof(typeStudent));
+    //root = malloc(sizeof(typeStudent));
+    //tail = malloc(sizeof(typeStudent));
     int choice = 0;
     root = createStudent();
     tail = root;
