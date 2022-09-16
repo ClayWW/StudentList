@@ -104,6 +104,8 @@ void deleteStudent(typeStudent** root, typeStudent** tail, char* delete){
         if(strcmp(current->last, delete)==0){ //not getting into here
             if(*root == current){
                 if(current->next == NULL){
+                    deallocateStudent(current);
+                    free(current);
                     *root = NULL;
                 } else{
                     current->next->prev = NULL;
