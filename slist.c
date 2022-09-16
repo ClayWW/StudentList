@@ -27,6 +27,7 @@ typeStudent* createStudent(){
     first[control-1] = '\0'; //Silber said to use this IT FINALLY WORKS NO MORE SEGMENTATION ERROR
     student->first = (char*)malloc(control);
     strcpy(student->first, first);
+    free(first);
 
     char last[BUFFER];
     printf("Last Name:\n");
@@ -35,6 +36,7 @@ typeStudent* createStudent(){
     last[control-1] = '\0';
     student->last = (char*)malloc(control);
     strcpy(student->last, last);
+    free(last);
 
     char fakeid[BUFFER];
     printf("ID:\n");
