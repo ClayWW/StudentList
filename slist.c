@@ -177,8 +177,8 @@ void quit(typeStudent** root){ //quits but may need to check if it properly deco
         typeStudent *old = current;
         current = current->next;
         deallocateStudent(old);
-        free(old->next);
-        free(old->prev);
+        //free(old->next);
+        //free(old->prev);
         free(old);
     }
     deallocateStudent(current);
