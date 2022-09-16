@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-int ticker;
 typeStudent *root;
 
 typeStudent* createStudent(char* first, char*last, long id, char* year, int grad){
@@ -16,24 +15,17 @@ typeStudent* createStudent(char* first, char*last, long id, char* year, int grad
     return student;
 }
 
-void addStudent(typeStudent* newStudent){
-    if(ticker == 0){
-        root = (typeStudent*)malloc(sizeof(typeStudent));
-        root = newStudent;
-        root->next = NULL;
-        root->prev = NULL;
-        ticker++;
-    }else{
-        typeStudent* current = root; //need to first establish the root
+void addStudent(typeStudent* root, typeStudent* newStudent){
+        typeStudent* current = root;
         while(current->next != NULL){
             current = current->next;
         }
-        current->next = (typeStudent*)malloc(sizeof(typeStudent));
-        current->next = newStudent;
-        current->next->next = NULL;
-        current->next->prev = current;
-        ticker++;
-    }
+	if(current != root){
+        	current->next = (typeStudent*)malloc(sizeof(typeStudent));
+        	current->next = newStudent;
+        	current->next->next = NULL;
+        	current->next->prev = current;
+	}
 }
 
 void cut(typeStudent* tobedeleted){
@@ -41,14 +33,12 @@ void cut(typeStudent* tobedeleted){
         typeStudent *behind = tobedeleted->prev;
         behind->next = NULL;
         free(tobedeleted);
-        ticker--;
     }else{
         typeStudent *behind = tobedeleted->prev;
         typeStudent *front = tobedeleted->next;
         front->prev = behind;
         behind->next = front;
         free(tobedeleted);
-        ticker--;
     }
 }
 
@@ -62,25 +52,25 @@ void deleteStudent(char* last){
         	typeStudent *behind = old->prev;
        		behind->next = NULL;
         	free(old);
-        	ticker--;
 	    }else{
         	typeStudent *behind = old->prev;
         	typeStudent *front = old->next;
         	front->prev = behind;
         	behind->next = front;
         	free(old);
-        	ticker--;
 	    }
         }
     }
 }
 
 void printForwards(){
+	printf("Gets here");
     typeStudent* current = root;
     while(current != NULL){
         printf("%s %s\n", current->first, current->last);
         current = current->next;
     }
+   printf("gets here");
 }
 
 void printBackwards(){
@@ -100,7 +90,6 @@ void quit(){
         typeStudent *old = current;
         current = current->next;
         free(old);
-        ticker--;
     }
     free(current);
     exit(0);
@@ -126,10 +115,10 @@ int main(){
 
     typeStudent* root;
     root = malloc(sizeof(typeStudent));
-    int ticker = 0;
     int choice = 0;
+    root = createStudent(first, last, *id, year, grad);
 	
-    addStudent(createStudent(first, last, *id, year, *grad));
+    addStudent(root, createStudent(first, last, *id, year, *grad));
 
     while(choice != 5){
         printf("Now, how would you like to proceed?\n");
@@ -143,10 +132,8 @@ int main(){
 	getchar();
         if(choice == 1){
             printf("Let's Begin.\n");
-            printf("First name:\n");
-	    printf("Gets to fget");	    
+            printf("First name:\n");	    
             fgets(first, 20, stdin);
-	    printf("Gets through fget");
             printf("Last name:\n");
             fgets(last, 20, stdin);
             printf("Student ID:\n");
@@ -156,7 +143,7 @@ int main(){
             printf("Graduation Year:\n");
             scanf("%d",grad);
 
-            addStudent(createStudent(first, last, *id, year, *grad));
+            addStudent(root, createStudent(first, last, *id, year, *grad));
 
         }else if(choice == 2){
             printf("What is the last name of this unfortunate Student?\n");
@@ -174,7 +161,8 @@ int main(){
         }
     }
     exit(0);
-
+    free(root);
+		
     return 0;
 }
 
