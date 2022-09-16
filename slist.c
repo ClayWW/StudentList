@@ -24,7 +24,7 @@ typeStudent* createStudent(){
     printf("First Name:\n");
     fgets(first, BUFFER, stdin);
     control = (int)strlen(first);
-    first[control-1] = '\0'; //Silber said to use this IT FINALLY WORKS NO MORE SEGMENTATION ERROR
+    first[control-1] = '\0'; 
     student->first = (char*)malloc(control);
     strcpy(student->first, first);
 
@@ -101,7 +101,7 @@ void deleteStudent(typeStudent** root, typeStudent** tail, char* delete){
     */
     typeStudent* current = *root;
     while(current != NULL){
-        if(strcmp(current->last, delete)==0){ //not getting into here
+        if(strcmp(current->last, delete)==0){ 
             if(*root == current){
                 if(current->next == NULL){
                     deallocateStudent(current);
@@ -129,7 +129,7 @@ void deleteStudent(typeStudent** root, typeStudent** tail, char* delete){
     }
 }
 
-void printForwards(typeStudent** root){ //worksd
+void printForwards(typeStudent** root){
     /*
         PARAMETERS: typeStudent** root: a double pointer that points to the pointer of the root
         RETURNS: None
@@ -145,7 +145,7 @@ void printForwards(typeStudent** root){ //worksd
     }
 }
 
-void printBackwards(typeStudent** tail){ //works
+void printBackwards(typeStudent** tail){
     /*
         PARAMETERS: typeStudent** tail: a double pointer that points to the pointer of the tail
         RETURNS: None
