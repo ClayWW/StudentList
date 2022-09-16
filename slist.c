@@ -17,15 +17,20 @@ typeStudent* createStudent(char* first, char*last, long id, char* year, int grad
 
 void addStudent(typeStudent* root, typeStudent* newStudent){
     typeStudent* current = root; //begin at the root
+    printf(root->first);
+    printf(current->first);
     while(current->next != NULL){
         current = current->next;    //keep going right so long as the next node doesn't return NULL
+        printf(current->first);
     }
     if(current != root){ //if the created student is not the root value, add to the right
+        printf("1");
         current->next = (typeStudent*)malloc(sizeof(typeStudent));
         current->next = newStudent;
         current->next->next = NULL;
         current->next->prev = current;
     }else{ //if the created student is the root, establish them as such
+        printf("2");
         current->next = NULL;
         current->prev = NULL;
     }
@@ -56,14 +61,12 @@ void deleteStudent(char* last){
         	typeStudent *behind = old->prev;
        		behind->next = NULL;
         	free(old);
-        	ticker--;
 	    }else{
         	typeStudent *behind = old->prev;
         	typeStudent *front = old->next;
         	front->prev = behind;
         	behind->next = front;
         	free(old);
-        	ticker--;
 	    }
         }
     }
@@ -121,14 +124,9 @@ int main(){
     root = malloc(sizeof(typeStudent));
     int ticker = 0;
     int choice = 0;
-<<<<<<< HEAD
     root = createStudent(first, last, *id, year, *grad);
 
     addStudent(root, createStudent(first, last, *id, year, *grad));
-=======
-	
-    addStudent(createStudent(first, last, *id, year, *grad));
->>>>>>> fa064795eb35425694d0f79fab91d348ca274a52
 
     while(choice != 5){
         printf("Now, how would you like to proceed?\n");
