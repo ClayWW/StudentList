@@ -73,9 +73,45 @@ void addStudent(typeStudent **root, typeStudent **tail, typeStudent* newStudent)
 	}
 }
 
-void deleteStudent(typeStudent** root, typeStudent** tail, char* last){ //results in a segmentation fault, this is the issue
+void deleteStudent(typeStudent** root, typeStudent** tail, char* delete){ //results in a segmentation fault, this is the issue
     //(EDIT) no segmentation fault now which is good, but it also doesn't work which is bad
-    
+    typeStudent* current = *root;
+    //printf("0");
+    while(current != NULL){
+        //printf("1");
+        if(strcmp(current->last, delete)==0){ //not getting into here
+            //printf("2");
+            if(*root == current){
+                //printf("3");
+                if(current->next == NULL){
+                    //printf("4");
+                    *root = NULL;
+                    //printf("5");
+                } else{
+                    //printf("6");
+                    current->next->prev = NULL;
+                    //printf("7");
+                    *root = current->next;
+                    //printf("8");
+                }
+            //printf("9");
+            } else if(current->next == NULL){
+                //printf("10");
+                //current->prev->next = NULL;
+                //printf("11");
+                *tail = current->prev;
+                //printf("12");
+            } else{
+                //printf("13");
+                current->next->prev = current->prev;
+                //printf("14");
+                current->prev->next = current->next;
+                //printf("15");
+            }
+        }
+        printf("AA");
+        current = current->next;
+    }
     /*
     typeStudent* current = *root;
     if(strcmp(current->last, last) == 0 && root == tail){ //in the case of the root being the only node and having the last name
@@ -221,6 +257,8 @@ int main(){
             printf("What is the last name of this unfortunate Student?\n");
             char lastSearch[BUFFER];
             fgets(lastSearch, BUFFER, stdin);
+            int fixTheFgets = (int)strlen(lastSearch);
+            lastSearch[fixTheFgets-1] = '\0';
             deleteStudent(&root, &tail, lastSearch);
 
         }else if(choice == 3){
