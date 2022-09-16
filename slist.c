@@ -120,8 +120,6 @@ void deleteStudent(typeStudent** root, typeStudent** tail, char* delete){
         }
         current = current->next;
     }
-    deallocateStudent(current);
-    free(current);
 }
 
 void printForwards(typeStudent** root){ //worksd
