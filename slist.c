@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int ticker;
 typeStudent *root;
 
 typeStudent* createStudent(char* first, char*last, long id, char* year, int grad){
@@ -15,39 +14,34 @@ typeStudent* createStudent(char* first, char*last, long id, char* year, int grad
     return student;
 }
 
-void addStudent(typeStudent* newStudent){
-    if(ticker == 0){
-        root = (typeStudent*)malloc(sizeof(typeStudent));
-        root = newStudent;
-        root->next = NULL;
-        root->prev = NULL;
-        ticker++;
-    }else{
-        typeStudent* current = root; //need to first establish the root
-        while(current->next != NULL){
-            current = current->next;
-        }
+void addStudent(typeStudent* root, typeStudent* newStudent){
+    typeStudent* current = root; //begin at the root
+    while(current->next != NULL){
+        current = current->next;    //keep going right so long as the next node doesn't return NULL
+    }
+    if(current != root){ //if the created student is not the root value, add to the right
         current->next = (typeStudent*)malloc(sizeof(typeStudent));
         current->next = newStudent;
         current->next->next = NULL;
         current->next->prev = current;
-        ticker++;
+    }else{ //if the created student is the root, establish them as such
+        current->next = NULL;
+        current->prev = NULL;
     }
 }
+
 
 void cut(typeStudent* tobedeleted){
     if(tobedeleted->next == NULL){
         typeStudent *behind = tobedeleted->prev;
         behind->next = NULL;
         free(tobedeleted);
-        ticker--;
     }else{
         typeStudent *behind = tobedeleted->prev;
         typeStudent *front = tobedeleted->next;
         front->prev = behind;
         behind->next = front;
         free(tobedeleted);
-        ticker--;
     }
 }
 
@@ -87,7 +81,6 @@ void exit(){
         typeStudent *old = current;
         current = current->next;
         free(old);
-        ticker--;
     }
     free(current);
     exit(0);
@@ -115,8 +108,9 @@ int main(){
     root = malloc(sizeof(typeStudent));
     int ticker = 0;
     int choice = 0;
+    root = createStudent(first, last, *id, year, *grad);
 
-    addStudent(createStudent(first, last, *id, year, *grad));
+    addStudent(root, createStudent(first, last, *id, year, *grad));
 
     while(choice != 5){
         printf("Now, how would you like to proceed?\n");
@@ -140,7 +134,7 @@ int main(){
             printf("Graduation Year:\n");
             scanf("%d",grad);
 
-            addStudent(createStudent(first, last, *id, year, *grad));
+            addStudent(root, createStudent(first, last, *id, year, *grad));
 
         }else if(choice == 2){
             printf("What is the last name of this unfortunate Student?\n");
@@ -148,7 +142,9 @@ int main(){
             deleteStudent(last);
 
         }else if(choice == 3){
+            printf(root->first);
             printForwards();
+            printf(root->first);
 
         }else if(choice == 4){
             printBackwards();
