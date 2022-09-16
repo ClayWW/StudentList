@@ -104,27 +104,21 @@ void deleteStudent(typeStudent** root, typeStudent** tail, char* delete){
         if(strcmp(current->last, delete)==0){ //not getting into here
             if(*root == current){
                 if(current->next == NULL){
-                    deallocateStudent(*root);
                     *root = NULL;
                 } else{
                     current->next->prev = NULL;
                     *root = current->next;
-                    deallocateStudent(current);
                 }
             } else if(current->next == NULL){
                 current->prev->next = NULL;
                 *tail = current->prev;
-                deallocateStudent(current);
             } else{
                 current->next->prev = current->prev;
                 current->prev->next = current->next;
-                deallocateStudent(current);
             }
         }
         current = current->next;
     }
-    deallocateStudent(current);
-    free(current);
 }
 
 void printForwards(typeStudent** root){ //worksd
@@ -157,8 +151,6 @@ void printBackwards(typeStudent** tail){ //works
         printf("%s %s\n", current->first, current->last);
         current = current->prev;
     }
-    deallocateStudent(current);
-    free(current);
 }
 
 void quit(typeStudent** root){ //quits but may need to check if it properly deconstructs everything
