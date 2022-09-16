@@ -36,7 +36,6 @@ typeStudent* createStudent(){
     last[control-1] = '\0';
     student->last = (char*)malloc(control);
     strcpy(student->last, last);
-    free(student->last);
 
     char fakeid[BUFFER];
     printf("ID:\n");
