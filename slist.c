@@ -110,14 +110,19 @@ void deleteStudent(typeStudent** root, typeStudent** tail, char* delete){
                 } else{
                     current->next->prev = NULL;
                     *root = current->next;
+                    deallocateStudent(current);
+                    free(current);
                 }
             } else if(current->next == NULL){
                 current->prev->next = NULL;
-                free(current->prev->next);
                 *tail = current->prev;
+                deallocateStudent(current);
+                free(current);
             } else{
                 current->next->prev = current->prev;
                 current->prev->next = current->next;
+                deallocateStudent(current);
+                free(current);
             }
         }
         current = current->next;
