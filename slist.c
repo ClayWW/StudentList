@@ -182,6 +182,7 @@ void quit(typeStudent** root){ //quits but may need to check if it properly deco
         //free(old->prev);
         free(old);
     }
+    deallocateStudent(root);
     deallocateStudent(current);
     free(current->next);
     free(current->prev);
