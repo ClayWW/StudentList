@@ -174,19 +174,15 @@ void quit(typeStudent** root){ //quits but may need to check if it properly deco
         student's memory until we are left with nothing but our current value left. We then free the final student and exit from the program.
     */
     typeStudent *current = *root;
-    printf("a");
     while(current != NULL){
-        printf("b");
         typeStudent *old = current;
-        printf("c");
         current = current->next;
-        printf("d");
-        printf("e");
+        free(old->first);
+        free(old->last);
+        free(old->year);
         free(old);
-        printf("f");
     }
     free(current);
-    printf("k");
     
     exit(0);
 }
@@ -236,14 +232,10 @@ int main(){
             printBackwards(&tail);
 
         }else if(choice == 5){
-            printf("here1");
             choice = 5;
-            printf("here2");
 
     	}
-        printf("here3");
 	}
-    printf("here4");
     quit(&root);
     exit(0);
     return 0;
