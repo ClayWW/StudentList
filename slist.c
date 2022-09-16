@@ -79,6 +79,7 @@ void addStudent(typeStudent **root, typeStudent **tail, typeStudent* newStudent)
         end->next = newStudent;
         newStudent->prev = *tail;
         *tail = newStudent;
+        free(end);
 	}
 }
 
@@ -118,6 +119,7 @@ void deleteStudent(typeStudent** root, typeStudent** tail, char* delete){
         }
         current = current->next;
     }
+    free(current);
 }
 
 void printForwards(typeStudent** root){ //works
@@ -134,6 +136,7 @@ void printForwards(typeStudent** root){ //works
         printf("%s %s\n", current->first, current->last);
         current = current->next;
     }
+    free(current);
 }
 
 void printBackwards(typeStudent** tail){ //works
@@ -150,6 +153,7 @@ void printBackwards(typeStudent** tail){ //works
         printf("%s %s\n", current->first, current->last);
         current = current->prev;
     }
+    free(current);
 }
 
 void quit(typeStudent** root){ //quits but may need to check if it properly deconstructs everything
@@ -215,6 +219,7 @@ int main(){
 	}
     exit(0);
     free(root);
+    free(tail);
 		
     return 0;
 }
