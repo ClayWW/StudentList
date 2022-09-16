@@ -165,7 +165,7 @@ void printBackwards(typeStudent** tail){ //works
     free(current);
 }
 
-void quit(typeStudent** root){ //quits but may need to check if it properly deconstructs everything
+void quit(typeStudent** root, typeStudent** tail){ //quits but may need to check if it properly deconstructs everything
     /*
         PARAMETERS: typeStudent** root: a double pointer that points to the pointer of the root
         RETURNS: None
@@ -183,6 +183,9 @@ void quit(typeStudent** root){ //quits but may need to check if it properly deco
         free(old);
     }
     deallocateStudent(root);
+    free(root);
+    deallocateStudent(tail);
+    free(tail);
     deallocateStudent(current);
     free(current->next);
     free(current->prev);
