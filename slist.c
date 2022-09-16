@@ -119,6 +119,7 @@ void deleteStudent(typeStudent** root, typeStudent** tail, char* delete){
         }
         current = current->next;
     }
+    free(current);
 }
 
 void printForwards(typeStudent** root){ //worksd
