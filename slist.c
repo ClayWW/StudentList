@@ -190,6 +190,8 @@ void deallocateStudent(typeStudent* student){
     free(student->id);
     free(student->year);
     free(student->grad);
+    free(student->next);
+    free(student->prev);
 }
 
 int main(){
