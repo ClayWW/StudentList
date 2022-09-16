@@ -105,10 +105,8 @@ void deleteStudent(typeStudent** root, typeStudent** tail, char* delete){
             if(*root == current){
                 if(current->next == NULL){
                     *root = NULL;
-                    free(root);
                 } else{
                     current->next->prev = NULL;
-                    free(current->next->prev);
                     *root = current->next;
                 }
             } else if(current->next == NULL){
@@ -118,15 +116,10 @@ void deleteStudent(typeStudent** root, typeStudent** tail, char* delete){
             } else{
                 current->next->prev = current->prev;
                 current->prev->next = current->next;
-                free(current->next);
-                free(current->prev);
-                deallocateStudent(current);
-                free(current);
             }
         }
         current = current->next;
     }
-    free(current);
 }
 
 void printForwards(typeStudent** root){ //worksd
