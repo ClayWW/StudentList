@@ -105,8 +105,6 @@ void deleteStudent(typeStudent** root, typeStudent** tail, char* delete){
             if(*root == current){
                 if(current->next == NULL){
                     *root = NULL;
-                    deallocateStudent(root);
-                    free(root);
                 } else{
                     current->next->prev = NULL;
                     *root = current->next;
