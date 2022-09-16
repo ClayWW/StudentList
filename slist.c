@@ -17,7 +17,7 @@ typeStudent* createStudent(){
     Id is a long int and grad year is an int so for those two specific cases we go through the steps of converting them from a char to their respective 
     data types. Our final result is a completed student (aside from their next and prev fields which remain NULL for the time being).
     */
-    typeStudent* student; //= malloc(sizeof(typeStudent));
+    typeStudent* student = malloc(sizeof(typeStudent));
     int control;
 
     char first[BUFFER];
