@@ -104,17 +104,21 @@ void deleteStudent(typeStudent** root, typeStudent** tail, char* delete){
         if(strcmp(current->last, delete)==0){ //not getting into here
             if(*root == current){
                 if(current->next == NULL){
+                    deallocateStudent(*root);
                     *root = NULL;
                 } else{
                     current->next->prev = NULL;
                     *root = current->next;
+                    deallocateStudent(current);
                 }
             } else if(current->next == NULL){
                 current->prev->next = NULL;
                 *tail = current->prev;
+                deallocateStudent(current);
             } else{
                 current->next->prev = current->prev;
                 current->prev->next = current->next;
+                deallocateStudent(current);
             }
         }
         current = current->next;
@@ -172,6 +176,14 @@ void quit(typeStudent** root){ //quits but may need to check if it properly deco
     }
     free(current);
     exit(0);
+}
+
+void deallocateStudent(typeStudent* student){
+    free(student->first);
+    free(student->last);
+    free(student->id);
+    free(student->year);
+    free(student->grad);
 }
 
 int main(){
