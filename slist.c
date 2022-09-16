@@ -120,6 +120,7 @@ void deleteStudent(typeStudent** root, typeStudent** tail, char* delete){
         }
         current = current->next;
     }
+    deallocateStudent(current);
     free(current);
 }
 
@@ -176,6 +177,12 @@ void quit(typeStudent** root){ //quits but may need to check if it properly deco
 }
 
 void deallocateStudent(typeStudent* student){
+    /*
+        PARAMETERS: typeStudent* student: the student that we will be deallocating
+        RETURNS: None
+
+        Frees the three attributes of the student that we previously malloced. This will help us avoid memory leaks.
+    */
     free(student->first);
     free(student->last);
     free(student->year);
