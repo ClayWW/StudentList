@@ -2,137 +2,147 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-<<<<<<< HEAD
 #define BUFFER 128
-typeStudent **root;
-typeStudent **tail;
-=======
-
 typeStudent *root;
->>>>>>> 6d92f88f689864188073186b3d03f7137c070f7c
+typeStudent *tail;
 
-typeStudent* createStudent(char* first, char*last, long id, char* year, int grad){
-    typeStudent* student = malloc(sizeof(typeStudent));
-    student->first = first;
-    student->last = last;
-    student->id = id;
-    student->year = year;
-    student->grad = grad;
+typeStudent* createStudent(){
+    typeStudent* student = (typeStudent*)malloc(sizeof(typeStudent));
+    int control;
+
+    char first[BUFFER];
+    printf("First Name:\n");
+    fgets(first, BUFFER, stdin);
+    control = (int)strlen(first);
+    first[control-1] = '\0'; //Silber said to use this IT FINALLY WORKS NO MORE SEGMENTATION ERROR
+    student->first = (char*)malloc(control);
+    strcpy(student->first, first);
+
+    char last[BUFFER];
+    printf("Last Name:\n");
+    fgets(last, BUFFER, stdin);
+    control = (int)strlen(last);
+    last[control-1] = '\0';
+    student->last = (char*)malloc(control);
+    strcpy(student->last, last);
+
+    char fakeid[BUFFER];
+    printf("ID:\n");
+    fgets(fakeid, BUFFER, stdin);
+    int realId = atoi(fakeid);
+    long int realRealId = (long int)realId;
+    student->id = realRealId;
+
+    char year[BUFFER];
+    printf("Freshman, Sophomore, Junior, or Senior?:\n");
+    fgets(year, BUFFER, stdin);
+    control = (int)strlen(year);
+    year[control-1] = '\0';
+    student->year = (char*)malloc(control);
+    strcpy(student->year, year);
+
+    char fakegrad[BUFFER];
+    printf("What year do they graduate?\n");
+    fgets(fakegrad, BUFFER, stdin);
+    int realGrad = atoi(fakegrad);
+    student->grad = realGrad;
+
     return student;
 }
 
-<<<<<<< HEAD
-void addStudent(typeStudent **root, typeStudent **tail, typeStudent* newStudent){
-        if(*root == NULL){
+void addStudent(typeStudent **root, typeStudent **tail, typeStudent* newStudent){ 
+    if(*root == NULL){
 		*root = newStudent;
 		*tail = newStudent;
 	}else{
+        typeStudent* end = *tail;
+        end->next = newStudent;
+        newStudent->prev = *tail;
+        *tail = newStudent;
+        /*
 		typeStudent* current = *root;
-        	while(current->next != NULL){
-            		current = current->next;
-       		}
-       		newStudent->next = NULL;
+        while(current->next != NULL){
+     		current = current->next;
+    	}
+   		newStudent->next = NULL;
 		newStudent->prev = current;
 		current->next = (typeStudent*)malloc(sizeof(typeStudent));
 		current->next = newStudent;
 		*tail = newStudent;
-		//current->next->next = NULL;
+        */
 	}
 }
-/*
-=======
-void addStudent(typeStudent* root, typeStudent* newStudent){
-    typeStudent* current = root; //begin at the root
-    printf(root->first);
-    printf(current->first);
-    while(current->next != NULL){
-        current = current->next;    //keep going right so long as the next node doesn't return NULL
-        printf(current->first);
-    }
-    if(current != root){ //if the created student is not the root value, add to the right
-        printf("1");
-        current->next = (typeStudent*)malloc(sizeof(typeStudent));
-        current->next = newStudent;
-        current->next->next = NULL;
-        current->next->prev = current;
-    }else{ //if the created student is the root, establish them as such
-        printf("2");
-        current->next = NULL;
-        current->prev = NULL;
-    }
-}
 
-
->>>>>>> 6d92f88f689864188073186b3d03f7137c070f7c
-void cut(typeStudent* tobedeleted){
-    if(tobedeleted->next == NULL){
-        typeStudent *behind = tobedeleted->prev;
-        behind->next = NULL;
-        free(tobedeleted);
-    }else{
-        typeStudent *behind = tobedeleted->prev;
-        typeStudent *front = tobedeleted->next;
-        front->prev = behind;
-        behind->next = front;
-        free(tobedeleted);
-    }
-}
-*/
-
-void deleteStudent(typeStudent** root, typeStudent** tail, char* last){
+void deleteStudent(typeStudent** root, typeStudent** tail, char* last){ //results in a segmentation fault, this is the issue
+    //(EDIT) no segmentation fault now which is good, but it also doesn't work which is bad
+    
+    /*
     typeStudent* current = *root;
-    if(current->last == last){
-	while(current->next->last == last && current->next != NULL){
-		current = current->next;
-		free(current->prev);
-	}
-	*root = current;
+    if(strcmp(current->last, last) == 0 && root == tail){ //in the case of the root being the only node and having the last name
+        free(current);
     }
-    while(current->next != NULL){
-        if(current->last == last){
-            typeStudent *old = current;
+    if(strcmp(current->last, last) == 0){
+        while(strcmp(current->next->last, last) == 0 && current != NULL && current->next != NULL){
             current = current->next;
-            if(old->next == NULL){
-        	typeStudent *behind = old->prev;
-       		behind->next = NULL;
-        	free(old);
-	    }else{
-        	typeStudent *behind = old->prev;
-        	typeStudent *front = old->next;
-        	front->prev = behind;
-        	behind->next = front;
-        	free(old);
+            typeStudent* old = current->prev;
+            free(old);
+        }
+        *root = current;
+    }
+    
+    typeStudent* current = *root;
+    if(*root == *tail && strcmp(current->last, last)==0){
+        typeStudent* current = *root;
+        free(current);
+    }
+    if(strcmp(current->last, last) == 0){ //if root has last name, reestablish root first as the first student without the last name
+	    while(strcmp(current->next->last, last) == 0 && current->next != NULL){
+		    current = current->next; //can be NULL, need to delete node, not pointer
+            typeStudent* old = current->prev;
+		    free(old);
 	    }
+	    *root = current;
+    }
+    while(current->next != NULL){ //scroll through the entire list
+        if(strcmp(current->last,last) == 0){ //in the case that the last name matches 
+            typeStudent *old = current; 
+            current = current->next;
+            if(current == NULL){ //if the student is at the end of the list
+        	    typeStudent *behind = old->prev;
+       		    behind->next = NULL;
+                *tail = behind;
+        	    free(old);
+	        }else{ //if the student is in the middle of the list
+        	    typeStudent *behind = old->prev;
+        	    typeStudent *front = old->next;
+        	    front->prev = behind;
+        	    behind->next = front;
+        	    free(old);
+	        }
+        }else{ //if students last name does not match, keep going
+            current = current->next;
         }
     }
+    */
 }
 
-void printForwards(typeStudent** root){
-	//printf("Gets here");
+void printForwards(typeStudent** root){ //works
     typeStudent* current = *root;
-   // printf(root->first); core dumps
     while(current != NULL){
         printf("%s %s\n", current->first, current->last);
         current = current->next;
-	//printf(current->first);
     }
-   //printf("gets here");
 }
 
-void printBackwards(typeStudent** tail){
+void printBackwards(typeStudent** tail){ //works
     typeStudent* current = *tail;
-    /*
-    while(current->next != NULL){
-        current = current->next;
-    }
-    */
     while(current != NULL){
         printf("%s %s\n", current->first, current->last);
         current = current->prev;
     }
 }
 
-void quit(typeStudent** root){
+void quit(typeStudent** root){ //quits but may need to check if it properly deconstructs everything
     typeStudent *current = *root;
     while(current != NULL){
         typeStudent *old = current;
@@ -145,6 +155,7 @@ void quit(typeStudent** root){
 
 int main(){
     printf("Welcome to the Student List. To begin, we will create our first student\n");
+    /*
     printf("First name:\n");
     char first[BUFFER];
     fgets(first, 128, stdin);
@@ -158,34 +169,25 @@ int main(){
     char year[BUFFER];
     fgets(year, 128, stdin);
     printf("Graduation Year:\n");
-    //printf("-1");
     char grad[BUFFER];
-    //printf("0");
-    //ends here for some reason
     fgets(grad, 128, stdin);
-    //printf("1");
-    //printf("2");
+    */
+    //createStudent();
+    
     typeStudent* root;
     typeStudent* tail;
     root = malloc(sizeof(typeStudent));
     tail = malloc(sizeof(typeStudent));
-    //printf("3");
     int choice = 0;
-<<<<<<< HEAD
-    //printf("4");
+    /*
+
     int realId = atoi(id);
     long int realRealId = (long int)realId;
     int realGrad = atoi(grad);
-    root = createStudent(first, last, realRealId, year, realGrad);
-    //printf("5");
-    *tail = *root;
-    //printf("6");
-=======
-    root = createStudent(first, last, *id, year, *grad);
-
-    addStudent(root, createStudent(first, last, *id, year, *grad));
-
->>>>>>> 6d92f88f689864188073186b3d03f7137c070f7c
+    */
+    root = createStudent();
+    tail = root;
+    
     while(choice != 5){
         printf("Now, how would you like to proceed?\n");
         printf("Enter the number that corresponds to your choice.\n");
@@ -195,8 +197,9 @@ int main(){
         printf("4: Print the List from End to Beginning\n");
         printf("5: Exit the Program\n");
         scanf("%d", &choice);
-	getchar();
+	    getchar();
         if(choice == 1){
+            /*
             printf("Let's Begin.\n");
             printf("First name:\n");	    
             fgets(first, 64, stdin);
@@ -208,32 +211,23 @@ int main(){
             fgets(year, 64, stdin);
             printf("Graduation Year:\n");
             fgets(grad, 64, stdin);
-	    realId = atoi(id);
-	    realRealId = (long int)realId;
-	    realGrad = atoi(grad);
-
-<<<<<<< HEAD
-            addStudent(&root, &tail, createStudent(first, last, realRealId, year, realGrad));
-=======
-            addStudent(root, createStudent(first, last, *id, year, *grad));
->>>>>>> 6d92f88f689864188073186b3d03f7137c070f7c
+	        realId = atoi(id);
+	        realRealId = (long int)realId;
+	        realGrad = atoi(grad);
+            */
+            addStudent(&root, &tail, createStudent());
 
         }else if(choice == 2){
             printf("What is the last name of this unfortunate Student?\n");
-            fgets(last, 15, stdin);
-            deleteStudent(&root, &tail, last);
+            char lastSearch[BUFFER];
+            fgets(lastSearch, BUFFER, stdin);
+            deleteStudent(&root, &tail, lastSearch);
 
         }else if(choice == 3){
-<<<<<<< HEAD
             printForwards(&root);
-=======
-            printf(root->first);
-            printForwards();
-            printf(root->first);
->>>>>>> 6d92f88f689864188073186b3d03f7137c070f7c
 
         }else if(choice == 4){
-            printBackwards(&root);
+            printBackwards(&tail);
 
         }else if(choice == 5){
             choice = 5;
