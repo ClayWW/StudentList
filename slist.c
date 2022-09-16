@@ -205,7 +205,6 @@ int main(){
             int fixTheFgets = (int)strlen(lastSearch);
             lastSearch[fixTheFgets-1] = '\0';
             deleteStudent(&root, &tail, lastSearch);
-            free(lastSearch);
 
         }else if(choice == 3){
             printForwards(&root);
@@ -221,7 +220,6 @@ int main(){
     exit(0);
     free(root);
     free(tail);
-    free(choice);
 		
     return 0;
 }
