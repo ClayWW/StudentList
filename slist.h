@@ -19,6 +19,6 @@ void cut(typeStudent* tobedeleted);
 void deleteStudent(char* last);
 void printForwards();
 void printBackwards();
-void exit();
+void quit();
 
 #endif //what does this do
