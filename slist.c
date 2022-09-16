@@ -177,9 +177,13 @@ void quit(typeStudent** root){ //quits but may need to check if it properly deco
         typeStudent *old = current;
         current = current->next;
         deallocateStudent(old);
+        free(old->next);
+        free(old->prev);
         free(old);
     }
     deallocateStudent(current);
+    free(current->next);
+    free(current->prev);
     free(current);
     exit(0);
 }
@@ -187,11 +191,7 @@ void quit(typeStudent** root){ //quits but may need to check if it properly deco
 void deallocateStudent(typeStudent* student){
     free(student->first);
     free(student->last);
-    free(student->id);
     free(student->year);
-    free(student->grad);
-    free(student->next);
-    free(student->prev);
 }
 
 int main(){
