@@ -50,12 +50,14 @@ typeStudent* createStudent(){
     year[control-1] = '\0';
     student->year = (char*)malloc(control);
     strcpy(student->year, year);
+    free(year);
 
     char fakegrad[BUFFER];
     printf("What year do they graduate?\n");
     fgets(fakegrad, BUFFER, stdin);
     int realGrad = atoi(fakegrad);
     student->grad = realGrad;
+
 
     return student;
 }
