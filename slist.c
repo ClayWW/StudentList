@@ -105,16 +105,23 @@ void deleteStudent(typeStudent** root, typeStudent** tail, char* delete){
             if(*root == current){
                 if(current->next == NULL){
                     *root = NULL;
+                    free(root);
                 } else{
                     current->next->prev = NULL;
+                    free(current->next->prev);
                     *root = current->next;
                 }
             } else if(current->next == NULL){
                 current->prev->next = NULL;
+                free(current->prev->next);
                 *tail = current->prev;
             } else{
                 current->next->prev = current->prev;
                 current->prev->next = current->next;
+                free(current->next);
+                free(current->prev);
+                deallocateStudent(current);
+                free(current);
             }
         }
         current = current->next;
@@ -185,8 +192,6 @@ int main(){
     
     typeStudent* root;
     typeStudent* tail;
-    //root = malloc(sizeof(typeStudent));
-    //tail = malloc(sizeof(typeStudent));
     int choice = 0;
     root = createStudent();
     tail = root;
